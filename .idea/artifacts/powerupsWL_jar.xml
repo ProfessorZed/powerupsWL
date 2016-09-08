@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="powerupsWL:jar">
+    <output-path>$USER_HOME$/Desktop/BukkitServer/plugins</output-path>
+    <root id="archive" name="powerupsWL.jar">
+      <element id="module-output" name="powerupsWL" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/BukkitServer/spigot.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/HolographicDisplaysAPI_v2.1.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/BukkitServer/plugins/BountifulAPI-1.6.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
