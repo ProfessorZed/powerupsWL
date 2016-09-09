@@ -67,8 +67,8 @@ public class Powerups extends JavaPlugin implements Listener {
                             p.sendMessage(ChatColor.BLUE + "BLU Team" + ChatColor.GRAY + " has captured a point and gained the Blinding Light Buff!");
                         }
                         if(randomInt == 3){
-                            Nuke(Material.TNT, p);
-                            p.sendMessage(ChatColor.RED + "Red Team" + ChatColor.GRAY + " has captured a point and granted Nuclear Missile Buff!");
+                            spawnMist(Material.OBSIDIAN, p);
+                            p.sendMessage(ChatColor.RED + "Red Team" + ChatColor.GRAY + " has captured a point and granted The Mist Buff!");
                         }
                         if(randomInt == 4){
                             Lightening(Material.IRON_SWORD, p);
@@ -268,6 +268,30 @@ public class Powerups extends JavaPlugin implements Listener {
         }.runTaskTimer(this, 0, 4*20);
     }
 
+    public void spawnMist(Material material, Player p){
+        actionBar(p, ChatColor.GRAY + "The Mist: ", 20, 0, 6);
+        String text = ChatColor.DARK_GRAY.toString() + ChatColor.BOLD + "The Mist";
+        ItemStack icon = new ItemStack(material);
+        final Hologram hologram = HologramsAPI.createHologram(this, poweruploc);
+
+        hologram.appendTextLine(text);
+        ItemLine itemLine = hologram.appendItemLine(icon);
+
+        itemLine.setPickupHandler(new PickupHandler() {
+            @Override
+            public void onPickup(Player player) {
+                player.playSound(player.getLocation(), Sound.FIZZ, 1F, 2F);
+
+                player.playEffect(hologram.getLocation(), Effect.CLOUD, null);
+
+                mistParicles(p, p.getLocation());
+                p.sendMessage(ChatColor.RED + "Red Team" + ChatColor.GOLD.toString() + ChatColor.ITALIC + " has called the dead from the ashes..");
+
+                hologram.delete();
+            }
+        });
+    }
+
     public void actionBar(Player player, String string, int ticks, final int n, int b){
         new BukkitRunnable(){
             int n = b;
@@ -286,5 +310,33 @@ public class Powerups extends JavaPlugin implements Listener {
                 }
             }
         }.runTaskTimer(this, 0, ticks);
+    }
+
+    public void mistParicles(Player p, Location location){
+        new BukkitRunnable(){
+            int n = 90;
+            public void run(){
+                n--;
+                for (int i = 1; i <= 50; ++i){
+                    double x = i*random();
+                    double y = i*random();
+                    double z = i*random();
+                    location.add(x,y,z);
+                    p.getLocation().getWorld().playEffect(location, Effect.CLOUD, 4);
+
+                    for(Entity entity : p.getLocation().getChunk().getEntities()){
+                        if( entity.getLocation().distance(location) < 1){
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 4));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 4));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20, 4));
+                        }
+                    }
+                    location.subtract(x,y,z);
+                    if(n <= 0){
+                        this.cancel();
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0, 0);
     }
 }
