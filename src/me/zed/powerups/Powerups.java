@@ -269,7 +269,6 @@ public class Powerups extends JavaPlugin implements Listener {
     }
 
     public void spawnMist(Material material, Player p){
-        actionBar(p, ChatColor.GRAY + "The Mist: ", 20, 0, 6);
         String text = ChatColor.DARK_GRAY.toString() + ChatColor.BOLD + "The Mist";
         ItemStack icon = new ItemStack(material);
         final Hologram hologram = HologramsAPI.createHologram(this, poweruploc);
@@ -283,6 +282,8 @@ public class Powerups extends JavaPlugin implements Listener {
                 player.playSound(player.getLocation(), Sound.FIZZ, 1F, 2F);
 
                 player.playEffect(hologram.getLocation(), Effect.CLOUD, null);
+
+                actionBar(p, ChatColor.GRAY + "The Mist: ", 20, 0, 6);
 
                 mistParicles(p, p.getLocation());
                 p.sendMessage(ChatColor.RED + "Red Team" + ChatColor.GOLD.toString() + ChatColor.ITALIC + " has called the dead from the ashes..");
